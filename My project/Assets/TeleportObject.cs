@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.XR;
 
-public class ObjectSpawner : MonoBehaviour
+public class TeleportObject : MonoBehaviour
 {
 
     float cameraHeight;
     float cameraWidth;
 
-    [SerializeField]
-    GameObject objectToTeleport;
-
-    GameObject objectToSpawnPrefab;
     Camera cam;
 
     private void Awake()
@@ -20,47 +16,26 @@ public class ObjectSpawner : MonoBehaviour
         cam = Camera.main;
     }
 
-    void Start()
+    private void Start()
     {
         cameraHeight = cam.orthographicSize * 2f;
-        cameraWidth = cameraHeight  * cam.aspect;
+        cameraWidth = cameraHeight * cam.aspect;
 
-        TeleportObject();
+        Teleport();
     }
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.T))
         {
-            TeleportObject();
+            Teleport();
         }
     }
 
-
-    void InstantiateObjectToSpawn()
-    {
-
-        Vector2 cameraBottomLeft = GetCameraBoundaries();
-        Vector2 randomPosition = RandomSpawnPosition(cameraBottomLeft, cameraHeight, cameraWidth);
-
-        objectToTeleport = Instantiate(objectToSpawnPrefab, randomPosition, Quaternion.identity);
-    }
-    public void TeleportObject()
-    {
-
-        if(objectToTeleport != null)
-        {
-            Vector2 cameraBottomLeft = GetCameraBoundaries();
-            Vector2 randomPosition = RandomSpawnPosition(cameraBottomLeft, cameraHeight, cameraWidth);
-
-            objectToTeleport.transform.position = randomPosition;
-        }
-
-    }
     Vector2 GetCameraBoundaries()
     {
         Vector2 cameraBottomLeft = (Vector2)cam.transform.position - new Vector2(cameraWidth / 2f, cameraHeight / 2f);
-        return cameraBottomLeft;  
+        return cameraBottomLeft;
     }
     Vector2 RandomSpawnPosition(Vector2 cameraBottomLeft, float cameraHeight, float cameraWidth)
     {
@@ -78,7 +53,6 @@ public class ObjectSpawner : MonoBehaviour
         return randomPosition;
     }
 
-
     bool IsDesinationValid(Vector2 position)
     {
 
@@ -86,7 +60,7 @@ public class ObjectSpawner : MonoBehaviour
 
         foreach (Collider2D collider in colliders)
         {
-            if (collider != null && collider.gameObject != objectToTeleport)
+            if (collider != null && collider.gameObject != this.gameObject)
             {
                 Debug.Log("Destination invalid");
                 return false;
@@ -97,13 +71,16 @@ public class ObjectSpawner : MonoBehaviour
         return true;
 
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Teleport()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            TeleportObject();
-        }
-    }
 
+        if (this.gameObject != null)
+        {
+            Vector2 cameraBottomLeft = GetCameraBoundaries();
+            Vector2 randomPosition = RandomSpawnPosition(cameraBottomLeft, cameraHeight, cameraWidth);
+
+            this.gameObject.transform.position = randomPosition;
+        }
+
+    }
 }
