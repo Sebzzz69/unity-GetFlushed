@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class TeleportObject : MonoBehaviour
@@ -10,6 +11,7 @@ public class TeleportObject : MonoBehaviour
     float cameraWidth;
 
     Camera cam;
+
 
     private void Awake()
     {
@@ -56,7 +58,7 @@ public class TeleportObject : MonoBehaviour
     bool IsDesinationValid(Vector2 position)
     {
 
-        Collider2D[] colliders = Physics2D.OverlapPointAll(position);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, (this.gameObject.transform.localScale.y / 2));
 
         foreach (Collider2D collider in colliders)
         {
