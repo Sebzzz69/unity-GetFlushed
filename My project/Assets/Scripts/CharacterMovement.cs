@@ -19,24 +19,28 @@ public class CharacterMovement : MonoBehaviour
     float horizontalInput;
     float verticalInput;
 
+    bool isCollidingWithWall;
+
     private void Update()
     {
         CheckInput();
+    }
 
+    private void FixedUpdate()
+    {
         Vector2 movementDirection = new Vector2(horizontalInput, verticalInput).normalized;
+
 
         // Calculate velocity based on input and speed 
         velocity = movementDirection * speed;
+        
 
         // Move the character
-        Vector2 newPosition = (Vector2)transform.position + velocity * Time.deltaTime;
-        transform.position = newPosition;
+        this.transform.position = (Vector2)transform.position + velocity * Time.deltaTime;
 
         horizontalInput = 0;
         verticalInput = 0;
 
-        // Apply damping to gradually stop the character
-        velocity = Vector2.Lerp(velocity, Vector2.zero, damping * Time.deltaTime);
 
 
     }
@@ -68,9 +72,18 @@ public class CharacterMovement : MonoBehaviour
         {
             collision.gameObject.GetComponent<TeleportObject>().Teleport();
         }
+        else
+        {
+            isCollidingWithWall = true;
+        }
         
     }
-    
-        
-    
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isCollidingWithWall = false;
+    }
+
+
+
 }
