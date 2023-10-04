@@ -11,7 +11,6 @@ public class HandleScore : MonoBehaviour
 
     public void UpdateScore()
     {
-        score++;
         textScore.text = score.ToString();
     }
 
@@ -19,6 +18,7 @@ public class HandleScore : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Coin"))
         {
+            score++;
             UpdateScore();
         }
     }

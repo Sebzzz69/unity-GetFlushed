@@ -27,6 +27,12 @@ public class PreloadScene : MonoBehaviour
         {
             Debug.Log($"[scene]:{sceneName} [load progress]: {this._asyncOperation.progress}");
 
+
+            if (this._asyncOperation.progress >= 0.9f)
+            {
+                this._asyncOperation.allowSceneActivation = true;
+            }
+
             yield return null;
         }
     }
@@ -58,11 +64,6 @@ public class PreloadScene : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         this.StartCoroutine(this.LoadSceneAsyncProcess(sceneName));
-
-        if (this._asyncOperation.progress >= 0.5f)
-        {
-            this._asyncOperation.allowSceneActivation = true;
-        }
 
     }
 

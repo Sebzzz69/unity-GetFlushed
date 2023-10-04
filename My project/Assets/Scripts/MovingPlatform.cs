@@ -26,9 +26,18 @@ public class MovingPlatform : MonoBehaviour
 
     void Update()
     {
+        MovePlatform();
+
+        SwitchMoveDirection();
+    }
+
+    void MovePlatform()
+    {
         // Move the platform towards the next position.
         this.transform.localPosition = Vector2.MoveTowards(this.transform.localPosition, targetPosition, speed * Time.deltaTime);
-
+    }
+    void SwitchMoveDirection()
+    {
         // If the platform reaches the next position, switch to the other end.
         if (this.transform.localPosition.x == targetPosition.x)
         {

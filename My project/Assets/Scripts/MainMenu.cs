@@ -7,9 +7,10 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("MainGame");
+        //SceneManager.LoadScene("MainGame");
         //GameObject.Find("SceneLoader").GetComponent<PreloadScene>().LoadScene("MainGame");
-
+        GameObject.Find("SceneLoader").GetComponent<SceneLoader>().LoadSceneAsync("MainGame");
+        GameObject.Find("SceneLoader").GetComponent<SceneLoader>().ActivateLoadedScene();
 
     }
 
