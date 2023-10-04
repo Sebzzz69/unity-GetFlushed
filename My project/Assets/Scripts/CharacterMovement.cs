@@ -1,89 +1,68 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float speed = 5.0f; // Adjust the speed as needed
-    public float damping = 5.0f; // Adjust the damping factor as needed
+    public float moveSpeed = 5f;            // Adjust the movement speed in the Inspector.
+    public float jumpForce = 10f;           // Adjust the jump force in the Inspector.
+    public float groundCheckRadius = 0.2f; // Radius of the ground check circle.
+    public LayerMask groundLayer;           // Layer mask to determine what is considered ground.
 
-    private Vector2 velocity;
+    private Rigidbody2D rb;
+    private bool isGrounded;
 
-    [SerializeField] private KeyCode keyUp;
-    [SerializeField] private KeyCode keyLeft;
-    [SerializeField] private KeyCode keyDown;
-    [SerializeField] private KeyCode keyRight;
+    public Transform groundCheckPosition;
+    public int playerNumber = 1; // Set this to 1 or 2 for each player.
 
-    float horizontalInput;
-    float verticalInput;
+    int horizontalInput;
 
-    bool isCollidingWithWall;
 
-    private void Update()
+
+
+    void Start()
     {
-        CheckInput();
-    }
-
-    private void FixedUpdate()
-    {
-        Vector2 movementDirection = new Vector2(horizontalInput, verticalInput).normalized;
-
-
-        // Calculate velocity based on input and speed 
-        velocity = movementDirection * speed;
-        
-
-        // Move the character
-        this.transform.position = (Vector2)transform.position + velocity * Time.deltaTime;
-
-        horizontalInput = 0;
-        verticalInput = 0;
-
+        rb = GetComponent<Rigidbody2D>();
 
 
     }
 
-    void CheckInput()
+    void Update()
     {
-        if (Input.GetKey(keyUp))
-        {
-            verticalInput = 1;
-        }
-        else if (Input.GetKey(keyDown))
-        {
-            verticalInput = -1;
-        }
+        // Check if the player is grounded.
+        isGrounded = Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer);
 
-        if (Input.GetKey(keyRight))
+
+        // Get input from the player.
+        float horizontalInput = Input.GetAxis("HorizontalPlayer" + playerNumber);
+
+        // Get input for jumping.
+        bool jumpInput = Input.GetButtonDown("PlayerJump" + playerNumber);
+
+        // Calculate the movement vector.
+        Vector2 movement = new Vector2(horizontalInput, 0) * moveSpeed;
+
+        // Apply the movement to the Rigidbody2D.
+        rb.velocity = new Vector2(movement.x, rb.velocity.y);
+
+        // Handle jumping.
+        if (isGrounded && jumpInput)
         {
-            horizontalInput = 1;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
-        else if (Input.GetKey(keyLeft))
-        {
-            horizontalInput = -1;
-        }
+        //Debug.Log(isGrounded);
+
+        Debug.Log("Horizontal Input: " + horizontalInput);
+
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Coin"))
-        {
-            collision.gameObject.GetComponent<TeleportObject>().Teleport();
-        }
-        else
-        {
-            isCollidingWithWall = true;
-        }
-        
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isCollidingWithWall = false;
-    }
-
-
 
 }
+
+
+
+
+
+
+
+
