@@ -70,4 +70,14 @@ public class MovingPlatform : MonoBehaviour
 
         return direction;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        collision.gameObject.transform.parent = this.transform;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        collision.gameObject.transform.parent = null;
+    }
 }
