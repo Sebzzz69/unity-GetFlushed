@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -7,7 +8,7 @@ public class PushPlayer : MonoBehaviour
 {
     [SerializeField] float pushForce;
 
-    [SerializeField] KeyCode pushKey;
+    public KeyCode pushKey;
 
     [SerializeField] float pushCooldown = 0.5f;
 
@@ -38,7 +39,7 @@ public class PushPlayer : MonoBehaviour
 
     void TryPush()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(transform.localPosition.x + (transform.localScale.x / 2), transform.localPosition.y), 0.5f, LayerMask.GetMask("Player"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(new Vector2(transform.localPosition.x + (transform.localScale.x / 4), transform.localPosition.y), 0.3f, LayerMask.GetMask("Player"));
 
         foreach (Collider2D collider in colliders)
         {
@@ -76,10 +77,10 @@ public class PushPlayer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        float radius = 0.5f;
+        float radius = 0.3f;
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(new Vector3(transform.localPosition.x + (transform.localScale.x / 2), transform.localPosition.y), radius);
+        Gizmos.DrawWireSphere(new Vector3(transform.localPosition.x + (transform.localScale.x / 4), transform.localPosition.y), radius);
     }
 
 
