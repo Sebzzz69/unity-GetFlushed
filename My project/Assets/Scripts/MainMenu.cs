@@ -1,21 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     public void StartGame()
     {
-        //SceneManager.LoadScene("MainGame");
-        //GameObject.Find("SceneLoader").GetComponent<PreloadScene>().LoadScene("MainGame");
-        GameObject.Find("SceneLoader").GetComponent<SceneLoader>().LoadSceneAsync("MainGame");
-        GameObject.Find("SceneLoader").GetComponent<SceneLoader>().ActivateLoadedScene();
+         GameObject.Find("SceneLoader").GetComponent<SceneLoader>().LoadSceneAsync("MainLevel");
+         GameObject.Find("SceneLoader").GetComponent<SceneLoader>().ActivateLoadedScene();
+    }
 
+    public void CreditScreen()
+    {
+
+        GameObject.Find("Canvas").transform.Find("MainMenuScreen").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("CreditScreen").gameObject.SetActive(true);
+    }
+
+    public void BackMenuButton()
+    {
+        GameObject.Find("Canvas").transform.Find("CreditScreen").gameObject.SetActive(false);
+        GameObject.Find("Canvas").transform.Find("MainMenuScreen").gameObject.SetActive(true);
     }
 
     public void QuitGame()
     {
+        Debug.Log("Quit");
         Application.Quit();
     }
 }
