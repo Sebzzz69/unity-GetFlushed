@@ -22,4 +22,9 @@ public class HandleScore : MonoBehaviour
             UpdateScore();
         }
     }
+
+    public int GetScore(int score)
+    {
+        return this.score;
+    }
 }

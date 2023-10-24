@@ -26,14 +26,6 @@ public class TeleportObject : MonoBehaviour
         Teleport();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.T))
-        {
-            Teleport();
-        }
-    }
-
     Vector2 GetCameraBoundaries()
     {
         Vector2 cameraBottomLeft = (Vector2)cam.transform.position - new Vector2(cameraWidth / 2f, cameraHeight / 2f);
@@ -85,4 +77,13 @@ public class TeleportObject : MonoBehaviour
         }
 
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Teleport();
+        }
+    }
+
 }
