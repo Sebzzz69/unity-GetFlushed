@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+
     }
 
     private void Start()
@@ -29,7 +30,16 @@ public class GameManager : MonoBehaviour
 
         if (playerOneScore >= 10 || playerTwoScore >= 10)
         {
-            // DO SOMETHING IDKKK
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("StartMenu");
         }
     }
+
+     
+
 }

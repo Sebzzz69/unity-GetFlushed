@@ -9,8 +9,9 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+       
     }
+
     public void StartGame()
     {
          GameObject.Find("SceneLoader").GetComponent<SceneLoader>().LoadSceneAsync("MainLevel");
