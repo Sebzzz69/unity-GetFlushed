@@ -77,12 +77,20 @@ public class TeleportObject : MonoBehaviour
 
     }
 
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("NoCoin"))
         {
             Teleport();
         }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Teleport();
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
